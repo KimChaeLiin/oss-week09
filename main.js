@@ -19,6 +19,7 @@ const CITIES = {
 
 // P1 부터 여기 아래에 씁니다.
 import { getForecast } from "./api.js";
+import { toDays } from "./logic.js";
 
 const form = document.querySelector("#run-form");
 const citySelect = document.querySelector("#city");
@@ -35,6 +36,9 @@ form.addEventListener("submit", async (event) => {
   statusEl.classList.remove("error");
   try{
     const daily = await getForecast(city);
+    state.city = city;
+    state.days = toDays(daily);
+    statusEl.textContent = "";
 
     statusEl.textContent = "";
     console.log(daily);
@@ -42,4 +46,21 @@ form.addEventListener("submit", async (event) => {
     statusEl.textContent = `could not load the forecast (${error.message}).`;
     statusEl.classList.add("error");
   }
+  render();
 });
+
+const state = {city: null, days: [] };
+
+function dayRow(day) {
+  const tr = document.createElement("tr");
+  for (const text of [day.date.slice(5), `${day.max}°`, `${day.wind}km/h`, `${day.rain}%`]) {
+    const td = document.createElement("td");
+    td.textContent = text;
+    tr.append(td);
+  }
+  return tr;
+}
+
+function render() {
+  rowsEl.replaceChildren(...state.days.map(dayRow));
+}
