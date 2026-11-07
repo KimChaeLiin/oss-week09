@@ -26,5 +26,11 @@ console.log(isGoodDay(days[1], limits)); // true (둘 다 기준과 같음)
 console.log(isGoodDay(days[2], limits)); // false (풍속만 기준을 넘음)
 console.log(isGoodDay(days[3], limits)); // false (강수만 기준을 넘음)
 
+console.log(reasons(days[0], limits)); // [] (둘 다 기준 아래)
+console.log(reasons(days[1], limits)); // [] (둘 다 기준과 같음)
+console.log(reasons(days[2], limits)); // ["wind"] (풍속만 초과)
+console.log(reasons(days[3], limits)); // ["rain"] (강수만 초과)
+console.log(reasons({rain: 57, wind: 11.2}, limits)); // ["rain", "wind"] (둘 다 초과)
+
 console.log(summarize(days, limits)); 
 console.log(summarize([], limits)); 
